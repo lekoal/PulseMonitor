@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "25609053100",
+    "project_id": "pulsemonitor-4e65f",
+    "storage_bucket": "pulsemonitor-4e65f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25609053100:android:d8ea808ea57b1832055009",
+        "android_client_info": {
+          "package_name": "com.example.pulsemonitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25609053100-dm1f446nr6i0tkubevoih44jg8ckukkg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcngWGCStgOK-5fyMkxz6oyxAO7imO06U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25609053100-dm1f446nr6i0tkubevoih44jg8ckukkg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

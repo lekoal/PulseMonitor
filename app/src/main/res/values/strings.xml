@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PulseMonitor</string>
+    <string name="fab_descr">Add new measures</string>
+    <string name="pressure">%1$d \/ %2$d</string>
+</resources>
