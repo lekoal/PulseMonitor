@@ -1,29 +1,24 @@
 package com.example.pulsemonitor.ui
 
 import android.app.ActionBar.LayoutParams
-import android.graphics.Paint.Align
-import android.text.Layout.Alignment
-import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.view.marginBottom
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pulsemonitor.R
 import com.example.pulsemonitor.data.PulseData
-import org.w3c.dom.Text
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
-    private val data = mutableListOf<PulseData>()
+    private var data: List<PulseData> = emptyList()
 
     fun setData(pulseDataList: List<PulseData>) {
-        data.clear()
-        data.addAll(pulseDataList)
+        notifyItemRangeRemoved(0, data.size)
+        data = pulseDataList
         notifyItemRangeChanged(0, pulseDataList.size)
     }
 
@@ -34,7 +29,6 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        Log.i("MY", "OnBindViewHolder")
         var prevDate = ""
         if (position > 0) {
             prevDate = data[position - 1].date
@@ -52,11 +46,33 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         private val context = itemView.context
 
         fun bind(item: PulseData, prevDate: String) {
-            Log.i("MY", "Holder is bound")
             val newLayout = LinearLayout(itemView.context)
+            newLayout.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             val time = AppCompatTextView(itemView.context)
+            time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            time.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1f
+            )
             val pressure = AppCompatTextView(itemView.context)
+            pressure.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+            pressure.setTextColor(ContextCompat.getColor(context, R.color.black))
+            pressure.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1f
+            )
             val pulse = AppCompatTextView(itemView.context)
+            pulse.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+            pulse.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1f
+            )
 
             if (item.date != prevDate) {
                 date.visibility = View.VISIBLE
@@ -69,22 +85,22 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
             val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             layoutParams.bottomMargin = 5
             newLayout.layoutParams = layoutParams
-            newLayout.setBackgroundResource(R.drawable.green_pulse_gradient)
-            time.text = item.data.time
-            time.gravity = Gravity.START
+            if (item.lowerBP < 80 && item.upperBP < 120) {
+                newLayout.setBackgroundResource(R.drawable.green_pulse_gradient)
+            } else if (item.lowerBP < 80 && item.upperBP in 120..129) {
+                newLayout.setBackgroundResource(R.drawable.yellow_pulse_gradient)
+            } else {
+                newLayout.setBackgroundResource(R.drawable.orange_pulse_gradient)
+            }
+
+            time.text = item.time
             pressure.text = context.getString(
                 R.string.pressure,
-                item.data.upperBP,
-                item.data.lowerBP
+                item.upperBP,
+                item.lowerBP
             )
             pressure.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            pulse.setCompoundDrawables(
-                AppCompatResources.getDrawable(
-                    context,
-                    R.drawable.ic_baseline_favorite_24
-                ), null, null, null
-            )
-            pulse.text = item.data.pulse.toString()
+            pulse.text = context.getString(R.string.pulse, item.pulse)
             pulse.gravity = Gravity.END
             newLayout.addView(time)
             newLayout.addView(pressure)
